@@ -9,6 +9,8 @@ import { ParentComponent } from './components/parent/parent.component';
 import { TextComponent } from './components/text/text.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
+import { TextProcessPipe } from './pipes/text-process.pipe';
 
 @NgModule({
   declarations: [
@@ -16,15 +18,17 @@ import {MatButtonModule} from '@angular/material/button';
     HomeComponent,
     TimeComponent,
     ParentComponent,
-    TextComponent
+    TextComponent,
+    TextProcessPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [TextProcessPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

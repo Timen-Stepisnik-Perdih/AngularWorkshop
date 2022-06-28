@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { TextProcessPipe } from 'src/app/pipes/text-process.pipe';
 
 @Component({
   selector: 'app-text',
@@ -7,9 +9,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TextComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private httpClient: HttpClient,
+    private customPipe: TextProcessPipe
+  ) { }
+
+  public text: string = '';
 
   ngOnInit(): void {
+    this.getText();
+  }
+
+  private getText(){
+    this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
+      for (var entry of  resp['entries']) {
+        this.text += ' ' + entry["Description"];
+      }
+      console.log(this.text);
+    });
+  }
+
+  private pipeText(){
+    this.text = this.customPipe.transform(this.text);
   }
 
 }
