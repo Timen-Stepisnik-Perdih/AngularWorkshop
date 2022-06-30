@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TextProcessPipe } from 'src/app/pipes/text-process.pipe';
 import { TextRetrieveAndProcessService } from 'src/app/services/text-retrieve-and-process.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-text',
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.css']
 })
-export class TextComponent implements OnInit {
+export class TextComponent implements OnInit, OnDestroy {
 
   constructor(
     private httpClient: HttpClient,
@@ -16,27 +17,34 @@ export class TextComponent implements OnInit {
     private service: TextRetrieveAndProcessService
   ) { }
 
+
+
   public text: string = '';
   public mostFrequentWords = [];
+  private subscription: Subscription;
 
   ngOnInit(): void {
-    var id = setInterval(() => {
-      if (this.service.hasResult()){
-        console.log("Got result from service");
-        this.mostFrequentWords = this.getTop5(this.service.getResult());
-        clearInterval(id);
-      }
-    }, 1000);
-    //this.getText();
+    // this.service.getTextAndProcessPromise().then((value => {
+    //   console.log(value)
+    //   this.mostFrequentWords = this.getTop5(value);
+    // })).catch((error) => {
+    //   console.log(error);
+    // }).finally(() => {
+    //   console.log("Promise completed");
+    // });
+
+    this.subscription = this.service.getTextAndProcessSubject().subscribe(value => {
+      console.log(value);
+      this.mostFrequentWords = this.getTop5(value);
+    }, error => {
+      console.log(error);
+    }, () => {
+      console.log("Subscription completed");
+    });
   }
 
-  private getText(){
-    this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
-      for (var entry of  resp['entries']) {
-        this.text += ' ' + entry["Description"];
-      }
-      console.log(this.text);
-    });
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private pipeText(){

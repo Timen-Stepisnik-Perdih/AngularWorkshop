@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { observable, Observable, of, Subject } from 'rxjs';
 
 
 @Injectable({
@@ -10,52 +10,68 @@ export class TextRetrieveAndProcessService {
 
   constructor(
     private httpClient: HttpClient,
-  ) {
-    this.getTextAndProcess();
-   }
+  ) {}
 
   public text: string = '';
-  private isProcessing = true;
-  //private wordDictionary = new Map<string, number>;
-  private wordDictionary = {}
 
-  private getTextAndProcess(){
+  public getTextAndProcessPromise(): Promise<{}>{
+    const promise = new Promise<{}>((resolve) => {
+      this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
+        for (var entry of  resp['entries']) {
+          this.text += ' ' + entry["Description"];
+        }
+        resolve(this.process(this.text));
+      });
+    });
+    return promise;
+  }
+
+  public getTextAndProcessObservable(): Observable<{}>{
+    const observable$ = new Observable((observer) => {
+      this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
+        for (var entry of  resp['entries']) {
+          this.text += ' ' + entry["Description"];
+        }
+        observer.next(this.process(this.text))
+        setInterval(() => {
+          this.text += " of";
+          observer.next(this.process(this.text, true));
+        }, 100);
+      });
+    });
+    return observable$;
+  }
+
+  public getTextAndProcessSubject(): Subject<{}>{
+    const subject$ = new Subject();
     this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
       for (var entry of  resp['entries']) {
         this.text += ' ' + entry["Description"];
       }
-      this.wordDictionary = this.process(this.text);
-      this.isProcessing = false;
+      subject$.next(this.process(this.text))
     });
+
+    setInterval(() => {
+      this.text += " of";
+      subject$.next(this.process(this.text, true));
+    }, 1000);
+
+    return subject$;
   }
 
-  public process(text: string){
+  public process(text: string, fast=false){
     var dict = {};
     for (var word of text.split(' ')){
-      // if (!this.wordDictionary.has(word)){
-      //   this.wordDictionary.set(word, 1);  
-      // }else{
-      //   this.wordDictionary.set(word, this.wordDictionary.get(word) +1 ); 
-      // }
       if (! (word in dict)){
         dict[word] = 1;  
       }else{
         dict[word] += 1;
       }
       var k = 0;
-      for (var i = 0; i< 1000000; i++)
-        k++;
+      if(!fast)
+        for (var i = 0; i< 1000000; i++)
+          k++;
     }
-
-    console.log(dict);
     return dict;
-  }
-
-  public hasResult(){
-    return !this.isProcessing;
-  }
-
-  public getResult(){
-    return this.wordDictionary;
   }
 }
