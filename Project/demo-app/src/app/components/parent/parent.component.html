@@ -1,1 +1,14 @@
-<p>parent works!</p>
+<p>Number of words in text component: {{numberOfWords}}</p>
+
+<hr>
+
+<app-time></app-time>
+
+<hr>
+
+<app-text (newTextEvent)="childMessage($event)"></app-text>
+
+<hr>
+
+<app-child [inputData]="messageForChild"></app-child>
+

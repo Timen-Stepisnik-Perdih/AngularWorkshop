@@ -12,6 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { TextProcessPipe } from './pipes/text-process.pipe';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChildComponent } from './components/child/child.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     TimeComponent,
     ParentComponent,
     TextComponent,
-    TextProcessPipe
+    TextProcessPipe,
+    ChildComponent
   ],
   imports: [
     BrowserModule,

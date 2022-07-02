@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentComponent implements OnInit {
 
+  public messageForChild = 'greetings from the parent';
+  public numberOfWords = 0;
+
   constructor() { }
 
   ngOnInit(): void {
+    setInterval(() => {
+      this.messageForChild += ".";
+    }, 1000);
+  }
+
+  public childMessage(event){
+    this.numberOfWords = event;
   }
 
 }
