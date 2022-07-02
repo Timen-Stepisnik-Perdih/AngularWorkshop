@@ -1,0 +1,43 @@
+<form (ngSubmit)="submit()">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <b>New Input</b>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-grid-list rowHeight="83px" cols="10">
+  
+            <mat-grid-tile [rowspan]="1" [colspan]="3">
+            <mat-form-field id="code" appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput name="name" [formControl]="nameControl"  required>
+                <mat-error *ngIf="nameControl.invalid">Wrong name</mat-error>
+            </mat-form-field>
+            </mat-grid-tile>
+    
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+            </mat-grid-tile>
+    
+            <mat-grid-tile [rowspan]="1" [colspan]="3">
+            <mat-form-field id="name" appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput name="email" [formControl]="emailControl" required>
+                <mat-error *ngIf="emailControl.invalid">Wrong email</mat-error>
+            </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [rowspan]="1" [colspan]="1">
+            </mat-grid-tile>
+
+            <mat-grid-tile [rowspan]="1" [colspan]="2">
+                <div style="width:100%;">
+                  <button class="k-float-right" type="submit" mat-flat-button color="primary" disabled="{{ !formGroupValidity() }}">Submit</button>
+                </div>
+              </mat-grid-tile>
+        </mat-grid-list>
+    </mat-expansion-panel>
+</form>
+
+<div>
+    <p *ngFor="let entry of entries">Name: {{entry.name}}, Email: {{entry.email}}</p>
+</div>

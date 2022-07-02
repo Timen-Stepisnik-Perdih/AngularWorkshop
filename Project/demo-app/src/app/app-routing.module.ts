@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { InputComponent } from './components/input/input.component';
 import { ParentComponent } from './components/parent/parent.component';
 import { TextComponent } from './components/text/text.component';
 import { TimeComponent } from './components/time/time.component';
@@ -10,6 +11,7 @@ const routes: Routes = [
   { path: 'parent', component: ParentComponent },
   { path: 'text', component: TextComponent },
   { path: 'time', component: TimeComponent },
+  { path: 'input', component: InputComponent },
 ];
 
 @NgModule({
