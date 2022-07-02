@@ -32,7 +32,7 @@ export class TextRetrieveAndProcessService {
         for (var entry of  resp['entries']) {
           this.text += ' ' + entry["Description"];
         }
-        observer.next(this.process(this.text))
+        observer.next(this.process(this.text, true))
         setInterval(() => {
           this.text += " of";
           observer.next(this.process(this.text, true));
@@ -43,17 +43,21 @@ export class TextRetrieveAndProcessService {
   }
 
   public getTextAndProcessSubject(): Subject<{}>{
+    var processed = false;
     const subject$ = new Subject();
     this.httpClient.get<any>('https://api.publicapis.org/entries').subscribe(resp => {
       for (var entry of  resp['entries']) {
         this.text += ' ' + entry["Description"];
       }
       subject$.next(this.process(this.text))
+      processed = true;
     });
 
     setInterval(() => {
-      this.text += " of";
-      subject$.next(this.process(this.text, true));
+      if (processed){
+        this.text += " of";
+        subject$.next(this.process(this.text, true));
+      }
     }, 1000);
 
     return subject$;

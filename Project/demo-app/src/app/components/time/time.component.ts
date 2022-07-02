@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommunicationService } from 'src/app/services/communication.service';
 
 @Component({
   selector: 'app-time',
@@ -7,12 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private commService: CommunicationService
+  ) { }
 
   public today: number = Date.now();
 
   ngOnInit(): void {
     setInterval(() => {this.today = Date.now()}, 1);
+  }
+
+  public messageSidebar() {
+    this.commService.sendMessage(true);
   }
 
 }

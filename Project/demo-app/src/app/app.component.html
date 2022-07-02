@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<mat-drawer-container class="example-container">
+    <mat-drawer id="sidebar" mode="side" opened>
+
+        <p>
+            <button mat-raised-button color="primary" (click)="routeToPath('parent')">Parent</button>
+        </p>
+        <p>
+            <button mat-raised-button color="accent" (click)="routeToPath('text')">Text</button>
+        </p>
+        <p>
+        <button mat-raised-button color="warn" (click)="routeToPath('time')">Time</button>
+        </p>
+
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

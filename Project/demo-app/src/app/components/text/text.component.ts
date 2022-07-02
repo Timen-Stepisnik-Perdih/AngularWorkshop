@@ -33,7 +33,7 @@ export class TextComponent implements OnInit, OnDestroy {
     //   console.log("Promise completed");
     // });
 
-    this.subscription = this.service.getTextAndProcessSubject().subscribe(value => {
+    this.subscription = this.service.getTextAndProcessObservable().subscribe(value => {
       console.log(value);
       this.mostFrequentWords = this.getTop5(value);
     }, error => {

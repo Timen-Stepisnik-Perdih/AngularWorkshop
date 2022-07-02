@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { TextProcessPipe } from './pipes/text-process.pipe';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TextProcessPipe } from './pipes/text-process.pipe';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSidenavModule
   ],
   providers: [TextProcessPipe],
   bootstrap: [AppComponent]
