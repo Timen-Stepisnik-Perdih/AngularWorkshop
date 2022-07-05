@@ -36,6 +36,7 @@ export class StreamComponent implements OnInit, OnDestroy {
     private targetX: number;
     private targetY: number;
     private streamSubscription: Subscription;
+    public toploHladno: string;
 
   ngOnInit(): void {
     // this.streamSubscription = this.streamService.getStream()
@@ -49,10 +50,21 @@ export class StreamComponent implements OnInit, OnDestroy {
 
     fromEvent(document.body, 'mousemove')
     .pipe(
-
-    ).subscribe( (e: MouseEvent) => { //npm install --save rxjs-compat   da bo delalo :)
-      console.log(e.pageX, e.pageY);
+      filter( (e: MouseEvent) => Math.abs(e.pageX - this.targetX) + Math.abs(e.pageY - this.targetY) < 500),
+      map((e: MouseEvent) => this.toploHladnoCilj(e)),
+    ).subscribe( (ukaz: string) => { //npm install --save rxjs-compat   da bo delalo :)
+      this.toploHladno = ukaz;
     })
+  }
+
+  private toploHladnoCilj(e: MouseEvent): string{
+    console.log(e.pageX, e.pageY)
+    const razlika = Math.abs(e.pageX - this.targetX) + Math.abs(e.pageY - this.targetY);
+    if (razlika < 25 )
+      return 'ZMAGA';
+    if (razlika < 180)
+      return 'TOPLO';
+    return 'HLADNO';
   }
 
   private extractCommand(light: string){
