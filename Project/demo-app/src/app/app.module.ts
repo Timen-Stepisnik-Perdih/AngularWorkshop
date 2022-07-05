@@ -19,6 +19,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { StreamComponent } from './components/stream/stream.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { MatInputModule } from '@angular/material/input';
     TextComponent,
     TextProcessPipe,
     ChildComponent,
-    InputComponent
+    InputComponent,
+    StreamComponent
   ],
   imports: [
     BrowserModule,
