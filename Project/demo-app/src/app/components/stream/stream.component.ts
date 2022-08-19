@@ -50,19 +50,22 @@ export class StreamComponent implements OnInit, OnDestroy {
 
     fromEvent(document.body, 'mousemove')
     .pipe(
-      filter( (e: MouseEvent) => Math.abs(e.pageX - this.targetX) + Math.abs(e.pageY - this.targetY) < 500),
-      map((e: MouseEvent) => this.toploHladnoCilj(e)),
+      map((e: MouseEvent) => this.distance(e)),
+      filter( (distance: number) => distance < 500),
+      map((distance: number) => this.toploHladnoCilj(distance)),
     ).subscribe( (ukaz: string) => { //npm install --save rxjs-compat   da bo delalo :)
       this.toploHladno = ukaz;
     })
   }
 
-  private toploHladnoCilj(e: MouseEvent): string{
-    console.log(e.pageX, e.pageY)
-    const razlika = Math.abs(e.pageX - this.targetX) + Math.abs(e.pageY - this.targetY);
-    if (razlika < 25 )
+  private distance(e: MouseEvent): number{
+    return Math.abs(e.pageX - this.targetX) + Math.abs(e.pageY - this.targetY);
+  }
+
+  private toploHladnoCilj(distance: number): string{
+    if (distance < 25 )
       return 'ZMAGA';
-    if (razlika < 180)
+    if (distance < 180)
       return 'TOPLO';
     return 'HLADNO';
   }
